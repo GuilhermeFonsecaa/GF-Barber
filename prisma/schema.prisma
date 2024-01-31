@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,18 +8,18 @@ datasource db {
 }
 
 model User {
-  id      String    @id @default(uuid())
-  name    String
-  Booking Booking[]
-}
-
-model BarberShop {
   id       String    @id @default(uuid())
   name     String
-  addres   String
+  bookings Booking[]
+}
+
+model Barbershop {
+  id       String    @id @default(uuid())
+  name     String
+  address  String
   imageUrl String
-  Service  Service[]
-  Booking  Booking[]
+  services Service[]
+  bookings Booking[]
 }
 
 model Service {
@@ -30,9 +27,9 @@ model Service {
   name         String
   price        Decimal    @db.Decimal(10, 2)
   barbershopId String
-  barbershop   BarberShop @relation(fields: [barbershopId], references: [id])
+  barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
   description  String
-  Booking      Booking[]
+  bookings     Booking[]
 }
 
 model Booking {
@@ -41,8 +38,8 @@ model Booking {
   user         User       @relation(fields: [userId], references: [id])
   serviceId    String
   service      Service    @relation(fields: [serviceId], references: [id])
+  barbershopId String
+  barbershop   Barbershop @relation(fields: [barbershopId], references: [id])
   date         DateTime
   status       String
-  barbershopId String
-  barbershop   BarberShop @relation(fields: [barbershopId], references: [id])
 }
