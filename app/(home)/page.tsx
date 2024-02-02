@@ -6,6 +6,7 @@ import BookingItem from "../_components/booking-item";
 import BarbershopItem from "./_components/barbershop-item";
 import { Barbershop } from "@prisma/client";
 import { db } from "../_lib/prisma";
+import Footer from "../_components/footer";
 
 interface BarbershopItemProps {
   barbershop: Barbershop;
@@ -39,17 +40,24 @@ export default async function Home() {
 
       <div className="px-5 mt-6">
         <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Recomendados</h2>
-      
+
         <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {barbershops.map((barbershop) => (
-            <BarbershopItem key={barbershop.id} barbershop={barbershop}  />
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
           ))}
         </div>
 
       </div>
 
+      <div className="px-5 mt-6 mb-[4rem]">
+        <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Populares</h2>
 
-
+        <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {barbershops.map((barbershop) => (
+            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
