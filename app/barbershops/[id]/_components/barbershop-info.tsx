@@ -2,9 +2,12 @@
 
 import Image from "next/image";
 import { Button } from "@/app/_components/ui/button";
-import { ChevronLeftIcon, Menu, StarIcon, MapPinIcon } from "lucide-react";
+import { ChevronLeftIcon, StarIcon, MapPinIcon, MenuIcon } from "lucide-react";
 import { Barbershop } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { Sheet, SheetContent, SheetTrigger } from "@/app/_components/ui/sheet";
+import SideMenu from "@/app/_components/side-menu";
+
 
 interface BarbershopInfoProps {
     barbershop: Barbershop
@@ -22,9 +25,19 @@ const BarbershopInfo = ({ barbershop }: BarbershopInfoProps) => {
                 <Button size="icon" variant="outline" onClick={handleBackClick} className="z-50 top-4 left-4 absolute">
                     <ChevronLeftIcon />
                 </Button>
-                <Button size="icon" variant="outline" className="z-50 right-4 top-4 absolute">
-                    <Menu />
-                </Button>
+
+                <Sheet>
+                    <SheetTrigger>
+                        <Button variant="outline" size="icon" className="z-50 right-4 top-4 absolute">
+                            <MenuIcon />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent className="p-0">
+                        <SideMenu />
+                    </SheetContent>
+                </Sheet>
+
+
                 <Image src={barbershop.imageUrl} alt={barbershop.name} fill style={{ objectFit: "cover" }} className="opacity-75" />
             </div>
 
