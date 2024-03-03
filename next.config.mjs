@@ -6,6 +6,9 @@ const nextConfig = {
                 hostname: "utfs.io"
             }
         ]
+    },
+    experimental: {
+        serverActions: true
     }
 };
 
