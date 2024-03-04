@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/app/_components/ui/card";
 import { Button } from "@/app/_components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/app/_components/ui/sheet";
 import { Calendar } from "@/app/_components/ui/calendar";
+import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
 import { useState, useMemo } from "react";
 import { ptBR } from "date-fns/locale";
@@ -14,6 +15,7 @@ import { format } from "date-fns/format";
 import { saveBooking } from "../_actions/save-bookings";
 import { setHours, setMinutes } from "date-fns";
 import { RefreshCw } from "lucide-react";
+import { useRouter } from "next/router";
 
 
 interface ServiceItemProps {
@@ -24,7 +26,9 @@ interface ServiceItemProps {
 
 
 const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps) => {
+    const router = useRouter()
     const { data } = useSession()
+    const [sheetIsOpen, setSheetIsOpen] = useState(false)
     const [submitIsLoading, setSubmitIsLoading] = useState(false)
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [hour, setHour] = useState<string | undefined>()
@@ -60,6 +64,18 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                 barbershopId: barbershop.id,
                 date: newDate,
                 userId: (data.user as any).id
+            })
+            setSheetIsOpen(false)
+            setHour(undefined)
+            setDate(undefined)
+            toast("Reserva realizada com sucesso", {
+                description: format(new Date, "'Para' dd 'de' MMMM 'às' HH':'mm'.'", {
+                    locale: ptBR
+                }),
+                action: {
+                    label: "Visualizar",
+                    onClick: () => router.push('/bookings')
+                },
             })
         }
         catch (error) {
@@ -97,7 +113,7 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                                 }
                             ).format(Number(service.price))}</p>
 
-                            <Sheet>
+                            <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
                                 <SheetTrigger asChild>
                                     <Button onClick={handleBookingClick} variant="secondary">Reservar</Button>
                                 </SheetTrigger>
