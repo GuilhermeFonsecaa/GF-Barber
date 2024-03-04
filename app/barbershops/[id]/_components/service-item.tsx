@@ -1,6 +1,6 @@
 "use client"
 
-import { Barbershop, Service } from "@prisma/client";
+import { Barbershop, Booking, Service } from "@prisma/client";
 import Image from "next/image";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Button } from "@/app/_components/ui/button";
@@ -8,15 +8,15 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter
 import { Calendar } from "@/app/_components/ui/calendar";
 import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
 import { format } from "date-fns/format";
 import { saveBooking } from "../_actions/save-bookings";
 import { setHours, setMinutes } from "date-fns";
 import { RefreshCw } from "lucide-react";
-import { useRouter } from "next/router";
-
+import { useRouter } from "next/navigation";
+import { getDayBookings } from "../_actions/get-day-bookings";
 
 interface ServiceItemProps {
     service: Service,
@@ -32,6 +32,19 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
     const [submitIsLoading, setSubmitIsLoading] = useState(false)
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [hour, setHour] = useState<string | undefined>()
+    const [dayBookings, setDayBookings] = useState<Booking[]>([])
+
+
+    useEffect(() => {
+        if (!date) {
+            return
+        }
+        const refreshAvailableHours = async () => {
+            const _dayBookings = await getDayBookings(barbershop.id,date)
+            setDayBookings(_dayBookings)
+        }
+        refreshAvailableHours()
+    }, [date, barbershop.id])
 
     const handleBookingClick = () => {
         if (!isAuthenticated) {
@@ -87,8 +100,26 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
     }
 
     const timeList = useMemo(() => {
-        return date ? generateDayTimeList(date) : []
-    }, [date]) //só vai executar quando date ser alterado
+        if (!date) {
+            return []
+        }
+        return generateDayTimeList(date).filter(time => { //gerando lista dos horários dos dias
+            //time formato: 09:00
+            //se houver alguma reserva em "dayBookings" com a hora e minutos igual a time, não incluir
+            const hour = Number(time.split(":")[0])
+            const timeMinutes = Number(time.split(":")[1])
+
+            const booking = dayBookings.find(booking => {
+                const bookingHour = booking.date.getHours()
+                const bookingMinutes = booking.date.getMinutes() //pegando hora e minutos de cada reserva
+                return bookingHour === hour && bookingMinutes === timeMinutes //hora e minutos das reservas que são iguais aos horários pré-selecionados
+            })
+            if (!booking) {
+                return true //se não houver a reserva retorna true, o horário estará aparecendo
+            }
+            return false
+        })
+    }, [date, dayBookings]) //só vai executar quando date ser alterado
 
     console.log({ timeList })
 
