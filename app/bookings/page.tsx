@@ -13,23 +13,41 @@ const BookingsPage = async () => {
         redirect("/")
     }
 
-    const bookings = await db.booking.findMany({
-        where: {
-            userId: (session.user as any).id
-        },
-        include: {
-            service: true,
-            barbershop: true,
-        },
-    })
+    const [confirmedBookings, finishedBookings] = await Promise.all([
+        db.booking.findMany({
+            where: {
+                userId: (session.user as any).id,
+                date: {
+                    gte: new Date()
+                }
+            },
+            include: {
+                service: true,
+                barbershop: true,
+            },
+        }),
+        db.booking.findMany({
+            where: {
+                userId: (session.user as any).id,
+                date: {
+                    lt: new Date()
+                }
+            },
+            include: {
+                service: true,
+                barbershop: true,
+            },
+        })
 
-    const confirmedBookings = bookings.filter((booking: Booking) =>
-        isFuture(booking.date)
-    )
+    ])
 
-    const finishedBookings = bookings.filter((booking: Booking) =>
-        isPast(booking.date)
-    )
+    //dessa forma gasta memória no servidor é melhor fazer por pesquisa no banco
+    /* const confirmedBookings = bookings.filter((booking: Booking) =>
+          isFuture(booking.date)
+      )
+      const finishedBookings = bookings.filter((booking: Booking) =>
+          isPast(booking.date)
+      )*/
 
     return (
         <>
