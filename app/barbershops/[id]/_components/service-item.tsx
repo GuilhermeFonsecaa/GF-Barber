@@ -13,7 +13,7 @@ import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
 import { format } from "date-fns/format";
 import { saveBooking } from "../_actions/save-bookings";
-import { setHours, setMinutes } from "date-fns";
+import { addDays, setHours, setMinutes } from "date-fns";
 import { RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getDayBookings } from "../_actions/get-day-bookings";
@@ -40,7 +40,7 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
             return
         }
         const refreshAvailableHours = async () => {
-            const _dayBookings = await getDayBookings(barbershop.id,date)
+            const _dayBookings = await getDayBookings(barbershop.id, date)
             setDayBookings(_dayBookings)
         }
         refreshAvailableHours()
@@ -158,7 +158,7 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                                             selected={date}
                                             onSelect={handleDateClick}
                                             locale={ptBR}
-                                            fromDate={new Date()}
+                                            fromDate={addDays(new Date(), 1)}
                                             styles={{
                                                 head_cell: {
                                                     width: "100%",
