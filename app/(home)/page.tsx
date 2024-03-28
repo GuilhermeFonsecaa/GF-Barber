@@ -39,7 +39,7 @@ export default async function Home() {
     <div>
       <Header />
       <div className="px-5 pt-5">
-        <h2 className="text-xl font-bold">{session?.user ? `Olá, ${session?.user?.name?.split(" ")[0]}` : "Olá! Faça login para agendar um horário!" }</h2>
+        <h2 className="text-xl font-bold">{session?.user ? `Olá, ${session?.user?.name?.split(" ")[0]}` : "Olá! Faça login para agendar um horário!"}</h2>
         <p className="capitalize text-sm">
           {format(new Date(), "EEEE', 'dd 'de' MMMM", {
             locale: ptBR
@@ -71,7 +71,9 @@ export default async function Home() {
 
         <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {barbershops.map((barbershop: Booking) => (
-            <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+            <div className="min-w-[167px] max-w-[167px]">
+              <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+            </div>
           ))}
         </div>
 

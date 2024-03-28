@@ -8,11 +8,9 @@ import Image from "next/image";
 import { StarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-interface BarbershopItemProps {
-    barbershop: Barbershop;
-}
 
-const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
+
+const BarbershopItem = ({ barbershop }: Barbershop) => {
     const router = useRouter();
     const handleBookingClick = () => {
         router.push(`/barbershops/${barbershop.id}`);
@@ -20,7 +18,7 @@ const BarbershopItem = ({ barbershop }: BarbershopItemProps) => {
 
     return (
 
-        <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
+        <Card className="w-full max-w-full rounded-2xl">
             <CardContent className="px-1 py-0">
                 <div className="relative w-full h-[159px]">
                     <div className="absolute top-2 left-2 z-50">
