@@ -30,8 +30,8 @@ const BarbershopItem = ({ barbershop }: Barbershop) => {
                         <Image src={barbershop.imageUrl} alt={barbershop.name} width={0} height={0} sizes="100vw" fill objectFit="cover" className="h-[159px] w-full rounded-2xl" />
                     </div>
                     <div className="px-2 pb-3">
-                        <h2 className="font-bold mt-2 overflow-hidden text-ellipsis text-nowrap lg:mt-3">{barbershop.name}</h2>
-                        <p className="text-gray-400 text-sm overflow-hidden text-ellipsis text-nowrap">{barbershop.address}</p>
+                        <h2 className="font-bold mt-2 overflow-hidden truncate text-ellipsis text-nowrap lg:mt-3">{barbershop.name}</h2>
+                        <p className="text-gray-400 text-sm overflow-hidden truncate text-ellipsis text-nowrap">{barbershop.address}</p>
                         <Button className="w-full mt-3" variant="secondary" onClick={handleBookingClick}>Reservar</Button>
                     </div>
                 </CardContent>
