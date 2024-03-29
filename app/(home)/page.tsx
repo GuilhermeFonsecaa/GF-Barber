@@ -57,7 +57,7 @@ export default async function Home() {
       <Header />
       <div className="lg:flex lg:px-36 lg:py-14 relative">
       <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: "url('/imagem-capa.jfif')", backgroundSize: "cover", filter: "grayscale(100%)", scale: "crop",opacity: "20%" }}></div>
-        <div className="flex-col z-10 relative hidden lg:block">
+        <div className="lg:flex-col lg:z-10 lg:relative lg:block">
           <div className="px-5 pt-5 lg:px-0">
             <h2 className="text-xl font-bold lg:font-normal lg:2xl">{session?.user ? `Olá, ${session?.user?.name?.split(" ")[0]}!` : "Olá! Faça login para agendar um horário!"}</h2>
             <p className="capitalize text-sm lg:py-2">
@@ -71,7 +71,21 @@ export default async function Home() {
             <Search />
           </div>
 
-          <div className="px-5 mt-6 lg:px-0">
+
+          <div className="px-5 mt-6 lg:px-0 lg:hidden">
+            {confirmedBookings.length > 0 && (
+              <>
+                <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
+                <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3">
+                  {confirmedBookings.map((booking: Booking) => (
+                    <BookingItem key={booking.id} booking={booking} />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+
+          <div className="px-5 mt-6 lg:px-0 hidden lg:block">
             {confirmedBookings.length > 0 && (
               <>
                 <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
