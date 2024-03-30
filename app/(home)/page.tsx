@@ -55,7 +55,7 @@ export default async function Home() {
   return (
     <div className="lg:flex-col">
       <Header />
-      <div className="lg:flex lg:px-36 lg:py-14 relative">
+      <div className="lg:flex lg:px-32 lg:py-14 relative">
       <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: "url('/imagem-capa.jfif')", backgroundSize: "cover", filter: "grayscale(100%)", scale: "crop",opacity: "20%" }}></div>
         <div className="lg:flex-col lg:z-10 lg:relative lg:block">
           <div className="px-5 pt-5 lg:px-0">
@@ -143,7 +143,7 @@ export default async function Home() {
       </div>
 
 
-      <div className="hidden mt-5 px-36 lg:block pb-10">
+      <div className="hidden mt-5 px-32 lg:block pb-10">
         <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Populares</h2>
 
         <div className="w-[1640px]">
@@ -161,7 +161,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div className="hidden px-36 lg:block pb-10">
+      <div className="hidden px-32 lg:block pb-10">
         <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Mais visitados</h2>
 
         <div className="w-[1640px]">
