@@ -37,11 +37,11 @@ const Header = () => {
                     {data?.user ?
                         <div className="hidden lg:block items-center">
                             <div className="flex justify-center items-center">
-                            <Link href={"/bookings"}>
-                                <Button className="bg-transparent font-bold gap-2">
-                                    <CalendarDays />
-                                    Agendamentos
-                                </Button>
+                                <Link href={"/bookings"}>
+                                    <Button className="bg-transparent font-bold gap-2">
+                                        <CalendarDays />
+                                        Agendamentos
+                                    </Button>
                                 </Link>
                                 <AlertDialog>
                                     <AlertDialogTrigger>
@@ -56,7 +56,7 @@ const Header = () => {
                                         <AlertDialogHeader>
                                             <AlertDialogTitle className="text-center">Logout</AlertDialogTitle>
                                             <AlertDialogDescription className="text-center">
-                                               Deseja sair da plataforma?
+                                                Deseja sair da plataforma?
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter className="gap-2">
@@ -70,7 +70,7 @@ const Header = () => {
                         </div>
                         :
                         <div className="gap-3 hidden lg:block">
-                           
+
                             <AlertDialog>
                                 <AlertDialogTrigger>
                                     <Button className="font-bold gap-2">
@@ -87,7 +87,7 @@ const Header = () => {
                                     </AlertDialogHeader>
                                     <AlertDialogFooter className="gap-2">
                                         <AlertDialogCancel className="w-28">Voltar</AlertDialogCancel>
-                                        <AlertDialogAction className="bg-primary gap-2 w-28" onClick={handleLoginClickGoogle}><FaGoogle />Google</AlertDialogAction>
+                                        <AlertDialogAction className="bg-primary gap-2 w-28 hover:bg-orange-600" onClick={handleLoginClickGoogle}><FaGoogle />Google</AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>
@@ -95,10 +95,6 @@ const Header = () => {
                     }
                 </CardContent>
             </Card>
-
-
-
-
         </header>
     );
 }
