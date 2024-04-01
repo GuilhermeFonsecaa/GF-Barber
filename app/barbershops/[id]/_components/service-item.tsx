@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/app/_components/ui/card";
 import { Button } from "@/app/_components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from "@/app/_components/ui/sheet";
 import { Calendar } from "@/app/_components/ui/calendar";
+import { ScrollArea, ScrollBar } from "@/app/_components/ui/scroll-area";
 import { toast } from "sonner";
 import { signIn, useSession } from "next-auth/react";
 import { useState, useMemo, useEffect } from "react";
@@ -13,7 +14,7 @@ import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "../_helpers/hours";
 import { format } from "date-fns/format";
 import { saveBooking } from "../_actions/save-bookings";
-import { addDays, setHours, setMinutes } from "date-fns";
+import { addDays, getDay, isSunday, setHours, setMinutes } from "date-fns";
 import { RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getDayBookings } from "../_actions/get-day-bookings";
@@ -24,7 +25,6 @@ interface ServiceItemProps {
     barbershop: Barbershop
 }
 
-
 const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps) => {
     const router = useRouter()
     const { data } = useSession()
@@ -33,7 +33,6 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [hour, setHour] = useState<string | undefined>()
     const [dayBookings, setDayBookings] = useState<Booking[]>([])
-
 
     useEffect(() => {
         if (!date) {
@@ -52,8 +51,16 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
         }
     }
 
+    const isDisabledSunday = (date: Date) => {
+        return isSunday(date);
+    }
+
     const handleDateClick = (date: Date | undefined) => {
         setDate(date)
+        if (date && isSunday(date)) { // Verifica se o dia selecionado é um domingo
+            toast("A barbearia está fechada aos domingos.",);
+            return;
+        }
         setHour(undefined)
     }
 
@@ -124,7 +131,7 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
     console.log({ timeList })
 
     return (
-        <Card>
+        <Card className="lg:w-[385px]">
             <CardContent className="p-3">
                 <div className="flex gap-4 items-center">
                     <div className="relative min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px]">
@@ -148,17 +155,19 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                                 <SheetTrigger asChild>
                                     <Button onClick={handleBookingClick} variant="secondary">Reservar</Button>
                                 </SheetTrigger>
-                                <SheetContent className="p-0 overflow-y-scroll">
+                                <SheetContent className="p-0 overflow-y-scroll lg:overflow-hidden lg:w-full">
                                     <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
                                         <SheetTitle>Fazer Reserva</SheetTitle>
                                     </SheetHeader>
-                                    <div className="py-6">
+                                    <div className="py-6 lg:w-full">
                                         <Calendar
                                             mode="single"
                                             selected={date}
                                             onSelect={handleDateClick}
                                             locale={ptBR}
+                                            className="lg:w-full"
                                             fromDate={addDays(new Date(), 1)}
+                                            disabled={isDisabledSunday}
                                             styles={{
                                                 head_cell: {
                                                     width: "100%",
@@ -186,12 +195,29 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                                     </div>
 
                                     {date && (
-                                        <div className=" flex overflow-x-auto py-6 px-5 border-y border-solid border-secondary [&::-webkit-scrollbar]:hidden gap-3">
-                                            {timeList.map((time) => (
-                                                <Button onClick={() => handleHourClick(time)} variant={
-                                                    hour === time ? "default" : "outline"
-                                                } className="rounded-full" key={time}>{time}</Button>
-                                            ))}
+                                        <div>
+                                            <div className="flex overflow-x-auto py-6 px-5 border-y border-solid border-secondary [&::-webkit-scrollbar]:hidden gap-3 lg:hidden">
+                                                {timeList.map((time) => (
+                                                    <Button onClick={() => handleHourClick(time)} variant={
+                                                        hour === time ? "default" : "outline"
+                                                    } className="rounded-full" key={time}>{time}</Button>
+                                                ))}
+                                            </div>
+
+                                            <div className="hidden lg:block">
+                                                <div className="flex py-6 px-5 border-y border-solid border-secondary ">
+                                                    <ScrollArea className="w-96 whitespace-nowrap rounded-md p-3 hidden lg:block">
+                                                        <div className="flex gap-2">
+                                                        {timeList.map((time) => (
+                                                            <Button onClick={() => handleHourClick(time)} variant={
+                                                                hour === time ? "default" : "outline"
+                                                            } className="rounded-full " key={time}>{time}</Button>
+                                                        ))}
+                                                        </div>
+                                                        <ScrollBar orientation="horizontal" />
+                                                    </ScrollArea>
+                                                </div>
+                                            </div>
                                         </div>
                                     )}
 
