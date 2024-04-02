@@ -54,11 +54,11 @@ export default async function Home() {
 
   return (
     <div className="lg:flex-col">
-      <Header />
+      <Header searchVisible={false}  />
       <div className="lg:flex lg:px-32 lg:py-14 relative">
       <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: "url('/imagem-capa.jfif')", backgroundSize: "cover", filter: "grayscale(100%)", scale: "crop",opacity: "20%" }}></div>
         <div className="lg:flex-col lg:z-10 lg:relative lg:block">
-          <div className="px-5 pt-5 lg:px-0">
+          <div className="px-5 pt-5 lg:px-0 lg:w-[439px]">
             <h2 className="text-xl font-bold lg:font-normal lg:2xl">{session?.user ? `Olá, ${session?.user?.name?.split(" ")[0]}!` : "Olá! Faça login para agendar um horário!"}</h2>
             <p className="capitalize text-sm lg:py-2">
               {format(new Date(), "EEEE', 'dd 'de' MMMM", {
@@ -99,7 +99,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="px-5 mt-6 mx-32 hidden lg:block">
+        <div className="px-5 mt-6 mx-28 hidden lg:block">
           <h2 className="text-sm uppercase text-gray-400 font-bold mb-3">Recomendados</h2>
 
           <div className="w-[1060px]">
@@ -146,7 +146,7 @@ export default async function Home() {
       <div className="hidden mt-5 px-32 lg:block pb-10">
         <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Populares</h2>
 
-        <div className="w-[1640px]">
+        <div className="w-[1670px]">
           <Carousel>
             <CarouselContent>
               {popularBarbershops.map((barbershop: Booking) => (
@@ -164,7 +164,7 @@ export default async function Home() {
       <div className="hidden px-32 lg:block pb-10">
         <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Mais visitados</h2>
 
-        <div className="w-[1640px]">
+        <div className="w-[1670px]">
           <Carousel>
             <CarouselContent>
               {mostVisitedBarbershop.map((barbershop: Booking) => (

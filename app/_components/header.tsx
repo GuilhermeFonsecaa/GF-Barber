@@ -11,8 +11,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { FaGoogle } from "react-icons/fa";
+import Search from "../(home)/_components/search";
 
-const Header = () => {
+interface HeaderProps {
+    searchVisible: boolean
+}
+
+const Header = ({ searchVisible }: HeaderProps) => {
     const { data } = useSession()
     const handleLoginClickGoogle = () => signIn("google")
     const handleLogoutClick = () => signOut()
@@ -22,8 +27,18 @@ const Header = () => {
             <Card>
                 <CardContent className="p-5 justify-between items-center flex flex-row lg:px-32">
                     <Link href={"/"}>
-                        <Image src="/logo.png" alt="FSW Barber" height={22} width={130} />
+                        <Image src="/logo.png" alt="GF Barber" height={20} width={195} />
                     </Link>
+
+                    {searchVisible && (
+                        <div className="lg:block hidden">
+                            <div className="flex items-center justify-center">
+                                <Search />
+                            </div>
+                        </div>
+                    )}
+
+
                     <Sheet>
                         <SheetTrigger className="lg:hidden">
                             <Button variant="outline" size="icon" className="h-8 w-8">

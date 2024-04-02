@@ -37,7 +37,7 @@ const BarbershopDetailsPage = async ({ params }: BarbershopDetailsPage) => {
     return (
         <div>
             <div className="hidden lg:block">
-                <Header />
+                <Header searchVisible={true}/>
             </div>
             <div className="lg:flex gap-10">
                 <div className="lg:flex-col">

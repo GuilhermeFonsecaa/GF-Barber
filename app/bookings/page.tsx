@@ -50,7 +50,7 @@ const BookingsPage = async () => {
 
     return (
         <>
-            <Header />
+            <Header searchVisible={true}/>
             <div className="px-5 py-6 ">
                 <h1 className="text-xl font-bold">Agendamentos</h1>
                 {confirmedBookings.length > 0 && (

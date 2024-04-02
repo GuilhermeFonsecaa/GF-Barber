@@ -28,8 +28,8 @@ const BarbershopPages = async ({ searchParams }: BarbershopPagesProps) => {
     });
     return (
         <>
-            <Header />
-            <div className="px-5 py-6 flex flex-col gap-6">
+            <Header searchVisible={true}/>
+            <div className="px-5 py-6 flex flex-col gap-6 lg:hidden">
                 <Search defaultValues={{
                     search: searchParams.search
                 }} />
