@@ -15,9 +15,10 @@ import { generateDayTimeList } from "../_helpers/hours";
 import { format } from "date-fns/format";
 import { saveBooking } from "../_actions/save-bookings";
 import { addDays, getDay, isSunday, setHours, setMinutes } from "date-fns";
-import { RefreshCw } from "lucide-react";
+import { Check, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getDayBookings } from "../_actions/get-day-bookings";
+import { Dialog, DialogContent, DialogFooter, DialogTrigger } from "@/app/_components/ui/dialog";
 
 interface ServiceItemProps {
     service: Service,
@@ -33,6 +34,7 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
     const [date, setDate] = useState<Date | undefined>(undefined);
     const [hour, setHour] = useState<string | undefined>()
     const [dayBookings, setDayBookings] = useState<Booking[]>([])
+    const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false)
 
     useEffect(() => {
         if (!date) {
@@ -68,7 +70,7 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
         setHour(time)
     }
 
-    const handleBookingSubmit = async () => {
+    const handleBookingSubmit = async (showToast: boolean, showDialog: boolean) => {
         setSubmitIsLoading(true)
         try {
             if (!hour || !date || !data?.user) {
@@ -88,15 +90,20 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
             setSheetIsOpen(false)
             setHour(undefined)
             setDate(undefined)
-            toast("Reserva realizada com sucesso", {
-                description: format(new Date, "'Para' dd 'de' MMMM 'às' HH':'mm'.'", {
-                    locale: ptBR
-                }),
-                action: {
-                    label: "Visualizar",
-                    onClick: () => router.push('/bookings')
-                },
-            })
+            if (showToast) {
+                toast("Reserva realizada com sucesso", {
+                    description: format(new Date, "'Para' dd 'de' MMMM 'às' HH':'mm'.'", {
+                        locale: ptBR
+                    }),
+                    action: {
+                        label: "Visualizar",
+                        onClick: () => router.push('/bookings')
+                    },
+                })
+            }
+            if (showDialog) {
+                setDialogIsOpen(true);
+            }
         }
         catch (error) {
             console.log(error)
@@ -208,11 +215,11 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                                                 <div className="flex py-6 px-5 border-y border-solid border-secondary ">
                                                     <ScrollArea className="w-96 whitespace-nowrap rounded-md p-3 hidden lg:block">
                                                         <div className="flex gap-2">
-                                                        {timeList.map((time) => (
-                                                            <Button onClick={() => handleHourClick(time)} variant={
-                                                                hour === time ? "default" : "outline"
-                                                            } className="rounded-full " key={time}>{time}</Button>
-                                                        ))}
+                                                            {timeList.map((time) => (
+                                                                <Button onClick={() => handleHourClick(time)} variant={
+                                                                    hour === time ? "default" : "outline"
+                                                                } className="rounded-full " key={time}>{time}</Button>
+                                                            ))}
                                                         </div>
                                                         <ScrollBar orientation="horizontal" />
                                                     </ScrollArea>
@@ -257,15 +264,36 @@ const ServiceItem = ({ barbershop, service, isAuthenticated }: ServiceItemProps)
                                         </Card>
                                     </div>
 
-                                    <SheetFooter className="px-5">
-                                        <Button onClick={handleBookingSubmit} disabled={(!hour || !date) || submitIsLoading} className="default rounded-lg">
+                                    <SheetFooter className="px-5 lg:hidden">
+                                        <Button onClick={() => handleBookingSubmit(true, false)} disabled={(!hour || !date) || submitIsLoading} className="default rounded-lg">
                                             {submitIsLoading && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
                                             Confirmar
                                         </Button>
                                     </SheetFooter>
 
+                                    <SheetFooter className="hidden lg:block px-5">
+                                        <Button onClick={() => handleBookingSubmit(false, true)} disabled={(!hour || !date) || submitIsLoading} className="default w-full rounded-lg">
+                                            {submitIsLoading && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
+                                            Confirmar
+                                        </Button>
+                                    </SheetFooter>
                                 </SheetContent>
                             </Sheet>
+
+                            {dialogIsOpen &&
+                                <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
+                                    <DialogContent className="flex flex-col items-center justify-center w-[300px]">
+                                        <div className="flex rounded-full bg-primary w-20 h-20 items-center justify-center relative">
+                                            <div className="absolute top-6"><Check size={40}/></div>
+                                        </div>
+                                        <h2 className="font-bold">Reserva Efetuada!</h2>
+                                        <p className="text-sm text-[#838896] text-center">Sua reserva foi agendada com sucesso.</p>
+                                        <DialogFooter className="w-full">
+                                            <Button className="w-full" onClick={() => setDialogIsOpen(false)}>Confirmar</Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>}
+
                         </div>
                     </div>
                 </div>

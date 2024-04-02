@@ -50,10 +50,10 @@ const BarbershopCardInfo = ({ barbershop }: BarbershopInfoProps) => {
                     {barbershop.phoneNumbers && barbershop.phoneNumbers.length > 0 && (
                         <div className="flex flex-col py-5 border-b border-solid secondary gap-3">
                             {barbershop.phoneNumbers.map((phoneNumber: Barbershop) => (
-                                <div className="flex justify-between">
+                                <div key={barbershop.id} className="flex justify-between">
                                     <div className="flex items-center justify-center gap-2">
                                         <Smartphone size={24} />
-                                        <p key={barbershop.id}>{phoneNumber}</p>
+                                        <p>{phoneNumber}</p>
                                     </div>
                                     <div>
                                         <Button className="rounded-xl" variant={"secondary"} onClick={() => copyPhoneNumber(phoneNumber)}>Copiar</Button>
@@ -94,9 +94,9 @@ const BarbershopCardInfo = ({ barbershop }: BarbershopInfoProps) => {
                         </div>
                     </div>
                 </CardContent>
-                <CardFooter className="flex justify-between py-5">
+                <CardFooter className="flex justify-between pt-3 pb-9">
                     <p>Em parceria com</p>
-                    <Image src={"/logo.png"} width={130} height={22} alt="FSW BARBER" />
+                    <Image src={"/logo.png"} width={200} height={22} alt="GF BARBER" />
                 </CardFooter>
             </Card>
         </div>
