@@ -54,9 +54,10 @@ export default async function Home() {
 
   return (
     <div className="lg:flex-col">
-      <Header searchVisible={false}  />
+      <Header searchVisible={false} />
       <div className="lg:flex lg:px-32 lg:py-14 relative">
-      <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: "url('/imagem-capa.jfif')", backgroundSize: "cover", filter: "grayscale(100%)", scale: "crop",opacity: "20%" }}></div>
+        <div className="absolute inset-0 hidden lg:block" style={{ backgroundImage: "url('/imagem-capa.jfif')", backgroundSize: "cover", filter: "grayscale(100%)", scale: "crop", opacity: "20%" }}></div>
+
         <div className="lg:flex-col lg:z-10 lg:relative lg:block">
           <div className="px-5 pt-5 lg:px-0 lg:w-[439px]">
             <h2 className="text-xl font-bold lg:font-normal lg:2xl">{session?.user ? `Olá, ${session?.user?.name?.split(" ")[0]}!` : "Olá! Faça login para agendar um horário!"}</h2>
@@ -72,7 +73,7 @@ export default async function Home() {
           </div>
 
 
-          <div className="px-5 mt-6 lg:px-0 lg:hidden">
+          <div className="px-3 mt-6 lg:px-0 lg:hidden">
             {confirmedBookings.length > 0 && (
               <>
                 <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
@@ -85,14 +86,22 @@ export default async function Home() {
             )}
           </div>
 
-          <div className="lg:mt-4 mt-6 px-0 hidden lg:block">
+          <div className="mt-6 hidden lg:block px-0 relative">
             {confirmedBookings.length > 0 && (
               <>
                 <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
-                <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3">
-                  {confirmedBookings.slice(0, 1).map((booking: Booking) => (
-                    <BookingItem position="right" key={booking.id} booking={booking} />
-                  ))}
+                <div className="flex [&::-webkit-scrollbar]:hidden gap-3  w-[500px]">
+                  <Carousel>
+                    <CarouselContent className="flex w-[510px]">
+                      {confirmedBookings.map((booking: Booking) => (
+                        <CarouselItem key={booking.id} className="">
+                          <BookingItem position="right" key={booking.id} booking={booking} />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
                 </div>
               </>
             )}
