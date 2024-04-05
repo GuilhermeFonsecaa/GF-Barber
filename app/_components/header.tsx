@@ -25,10 +25,18 @@ const Header = ({ searchVisible }: HeaderProps) => {
     return (
         <header>
             <Card>
-                <CardContent className="p-5 justify-between items-center flex flex-row lg:px-32">
-                    <Link href={"/"}>
-                        <Image src="/logo.png" alt="GF Barber" height={20} width={195} />
-                    </Link>
+                <CardContent className="p-5 justify-between items-center flex flex-row lg:px-32 lg:h-20">
+                    <div className="hidden lg:block">
+                        <Link href={"/"}>
+                            <Image src="/logo.png" alt="GF Barber" height={20} width={160} />
+                        </Link>
+                    </div>
+
+                    <div className="lg:hidden">
+                        <Link href={"/"}>
+                            <Image src="/logo.png" alt="GF Barber" height={20} width={170} />
+                        </Link>
+                    </div>
 
                     {searchVisible && (
                         <div className="lg:block hidden">

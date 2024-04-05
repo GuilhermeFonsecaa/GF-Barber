@@ -78,20 +78,20 @@ export default async function Home() {
                 <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
                 <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3">
                   {confirmedBookings.map((booking: Booking) => (
-                    <BookingItem key={booking.id} booking={booking} />
+                    <BookingItem position="right" key={booking.id} booking={booking} />
                   ))}
                 </div>
               </>
             )}
           </div>
 
-          <div className="px-5 mt-6 lg:px-0 hidden lg:block">
+          <div className="lg:mt-4 mt-6 px-0 hidden lg:block">
             {confirmedBookings.length > 0 && (
               <>
                 <h2 className="text-xs uppercase text-gray-400 font-bold mb-3">Agendamentos</h2>
                 <div className="flex overflow-x-auto [&::-webkit-scrollbar]:hidden gap-3">
                   {confirmedBookings.slice(0, 1).map((booking: Booking) => (
-                    <BookingItem key={booking.id} booking={booking} />
+                    <BookingItem position="right" key={booking.id} booking={booking} />
                   ))}
                 </div>
               </>

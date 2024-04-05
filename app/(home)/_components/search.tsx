@@ -36,24 +36,25 @@ const Search = ({defaultValues}: SearchProps) => {
     return (
         <div className="flex items-center gap-2">
             <Form {...form}>
-                <form className="flex w-full gap-4 lg:w-[500px]" onSubmit={form.handleSubmit(handleSubmit)}>
+                <form className="flex w-full gap-2 lg:w-[500px]" onSubmit={form.handleSubmit(handleSubmit)}>
                     <FormField
                         control={form.control}
                         name="search"
                         render={({ field }) => (
                             <FormItem className="w-full lg:my-3">
                                 <FormControl>
-                                    <Input className="lg:py-3" placeholder="Busque por uma barbearia..." {...field} />
+                                    <Input placeholder="Busque por uma barbearia..." {...field} />
                                 </FormControl>
 
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <Button className="lg:p-2 lg:my-3" variant="default" size="icon" type="submit">
-                        <SearchIcon size={20} />
+                    <Button className="w-10 h-8 lg:my-4 mt-1" variant="default" size="icon" type="submit">
+                        <SearchIcon size={17} />
                     </Button>
                 </form>
+
             </Form>
         </div>
     );

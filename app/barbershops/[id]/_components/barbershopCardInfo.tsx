@@ -96,7 +96,7 @@ const BarbershopCardInfo = ({ barbershop }: BarbershopInfoProps) => {
                 </CardContent>
                 <CardFooter className="flex justify-between pt-3 pb-9">
                     <p>Em parceria com</p>
-                    <Image src={"/logo.png"} width={200} height={22} alt="GF BARBER" />
+                    <Image src={"/logo.png"} width={170} height={22} alt="GF BARBER" />
                 </CardFooter>
             </Card>
         </div>
